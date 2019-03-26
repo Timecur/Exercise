@@ -1,0 +1,64 @@
+链接：https://www.nowcoder.com/questionTerminal/181a1a71c7574266ad07f9739f791506
+来源：牛客网
+/*
+  查找两个字符串a,b中的最长公共子串。若有多个，输出在较短串中最先出现的那个。 
+  输入描述:
+  输入两个字符串
+
+
+  输出描述:
+  返回重复出现的字符
+  示例1
+  输入
+  abcdefghijklmnop
+  abcsafjklmnopqrstuvw
+  输出
+  jklmnop
+*/
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+string LongestMatchStr(string &A, string &B)
+{
+    if(A.empty() || B.empty())
+        return "";
+    // 为了之后提高效率
+    if(A.size() > B.size()){
+        return LongestMatchStr(B, A);
+    }
+    // 记录最终返回的字符串
+    string res = "";
+    // tag记录A的下标i与B下标j已匹配的长度
+    vector<vector<int> > tag(A.size()+1,vector<int>(B.size()+1,0));
+    
+    for(int i = 1; i < A.size(); i++){
+        for(int j = 1; j < B.size(); j++){
+            
+            // A与B相应位置匹配，在之前基础上+1，否则为0
+            if(A[i-1] == B[j-1])
+                tag[i][j] = tag[i-1][j-1] + 1;
+            else
+                tag[i][j] = 0;
+        
+        // 如果有更长的，更新返回字符串res
+            if(tag[i][j] > res.size()){
+                res = A.substr(i-tag[i][j], tag[i][j]); // substr返回某个字符串
+           }
+        }
+    } 
+    return res;
+}
+
+int main()
+{
+    string s1, s2;
+    while(cin >> s1 >> s2){
+        cout << LongestMatchStr(s1, s2) << endl;
+    }
+    
+    return 0;
+}

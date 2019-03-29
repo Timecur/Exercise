@@ -1,0 +1,41 @@
+
+#include <iostream>
+#include <string>
+#include <map>
+
+using namespace std;
+
+int main()
+{
+	string str;
+	while (cin >> str){
+		char cstr;
+
+		map<char, int> mm;
+		for (auto &e : str){
+			if (0 >= mm.count(e)){
+				mm[e] = 1;
+			}
+			else{
+				mm[e]++;
+			}
+		}
+
+		int index = str.size();
+		map<char, int>::iterator it = mm.begin();
+		while (it != mm.end()){
+			if (it->second == 1){
+				if (index > str.find(it->first))
+					index = str.find(it->first);
+			}
+			it++;
+		}
+		if (index != str.size()){
+			cout << str[index] << endl;
+		}
+		else
+			cout << -1 << endl;
+	}
+
+	return 0;
+}

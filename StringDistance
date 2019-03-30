@@ -1,0 +1,51 @@
+/*
+    计算字符串的距离
+*/
+
+#include <iostream>
+#include <map>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int  calStringDistance(string a, string  b)
+
+{
+	if (a.empty() || b.empty())
+		return max(a.size(), b.size());
+
+	int lena = a.size();
+	int lenb = b.size();
+	vector<vector<int> > dp(1 + lena, vector<int>(1 + lenb, 0));
+	
+	for (int i = 0; i <= lena; i++) dp[i][0] = i;
+	for (int i = 0; i <= lenb; i++) dp[0][i] = i;
+	
+	for (int i = 1; i <= lena; i++){
+		for (int j = 1; j <= lenb; j++){
+			// 判断第i个字符与第j个字符是否相等
+			if (a[i - 1] == b[j - 1]){
+				dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1;
+				// 两字符相等时，dp[i-1][j-1]编辑距离不变
+				dp[i][j] = min(dp[i][j], dp[i - 1][j - 1]);
+			}
+			else{
+			// 如果字符不匹配，则取删除，插入，替换中最小的距离 
+				dp[i][j] = min(dp[i-1][j], dp[i][j - 1]) + 1;
+				dp[i][j] = min(dp[i][j], dp[i - 1][j - 1] + 1);
+			}
+		}
+	}
+	
+
+	return  dp[lena][lenb];
+}
+
+int main(){
+	string a, b;
+	while (cin >> a >> b)
+		cout << calStringDistance(a, b) << endl;
+	return 0;
+}

@@ -1,0 +1,77 @@
+// https://www.nowcoder.com/practice/9be0172896bd43948f8a32fb954e1be1?tpId=13&tqId=11216&rp=4&ru=/ta/coding-interviews&qru=/ta/coding-interviews/question-ranking
+// 优先级队列实现
+/*
+class Solution {
+public:
+    void Insert(int num)
+    {
+        if(max_que.empty())
+            max_que.push(num);
+        else if(min_que.empty())
+            min_que.push(num);
+        else if(max_que.size() == min_que.size()){
+            if(max_que.top() > min_que.top()){
+                max_que.push(min_que.top());
+                min_que.pop();
+                min_que.push(max_que.top());
+                max_que.pop();
+            }
+            if(num > min_que.top()){
+                max_que.push(min_que.top());
+                min_que.pop();
+                min_que.push(num);
+            }
+            else
+                max_que.push(num);
+        }
+        else{
+            if(num < max_que.top()){
+                min_que.push(max_que.top());
+                max_que.pop();
+                max_que.push(num);
+            }
+            else
+                min_que.push(num);
+        }
+    }
+    
+
+    double GetMedian()
+    { 
+        if(max_que.size() == min_que.size())
+            return (min_que.top()+max_que.top())/2.0;
+        else
+            return max_que.top();
+    }
+private:
+    priority_queue<int>max_que;
+    priority_queue<int, vector<int>, greater<int> >min_que;
+};
+*/
+// multiset实现
+class Solution {
+public:
+    void Insert(int num)
+    {
+        setNum.insert(num);
+    }
+    
+    double GetMedian()
+    { 
+        int size = setNum.size();
+        multiset<int>::iterator it = setNum.begin();
+        int res = 0;
+        for (int i = 0; i < size/2; i++){
+            if (size % 2 == 0){
+                res = *it;
+            }
+            it++;
+        }
+        if (size % 2 == 0)
+            return (*it + res) / 2.0;
+        else
+            return *it;
+    }
+private:
+    multiset<int> setNum;
+};

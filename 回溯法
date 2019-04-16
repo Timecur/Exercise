@@ -1,0 +1,108 @@
+
+#include <iostream>
+
+using namespace std;
+
+bool IsPath(char* matrix, int rows, int cols, int i, int j, char* str, int index, bool** map)
+{
+	if (index == strlen(str))
+		return true;
+	if (i < 0 || i >= rows || j < 0 || j >= cols)
+		return false;
+	if (!map[i][j] && matrix[i*rows + j] == str[index]){
+		map[i][j] = true;
+		return  IsPath(matrix, rows, cols, i-1, j, str, index + 1, map) || IsPath(matrix, rows, cols, i, j-1, str, index + 1, map)/
+			IsPath(matrix, rows, cols, i, j+1, str, index + 1, map) || IsPath(matrix, rows, cols, i+1, j, str, index + 1, map);
+	}
+
+}
+
+bool hasPath(char* matrix, int rows, int cols, char* str)
+{
+	bool** map = new bool*[cols];
+	for (int i = 0; i < cols; i++)
+		map[i] = new bool[rows];
+	//int k = 0;
+	//for (int i = 0; i < rows; i++){
+	//	for (int j = 0; j < cols; j++){
+	//		map[i][j] = *(matrix+k);
+	//		++k;
+	//		// cout << map[i][j] << " ";
+	//	}
+	//	// cout << endl;
+	//}
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++){
+			map[i][j] = false;
+		}
+	}
+	
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++){
+			if (IsPath(matrix, rows, cols, i, j, str, 0, map))
+				return true;
+		}
+	}
+	return false;
+}
+
+int main()
+{
+	char matrix[] = { 'a', 'b', 'c', 'e', 's', 'f', 'c', 's', 'a', 'd', 'e', 'e'};
+	char str[] = { 'b', 'c', 'c', 'e', 'd' };
+	cout << hasPath(matrix, 3, 4, str);
+	return 0;
+}
+
+=====================================================================================================================================
+
+class Solution {
+public:
+	int AddFigure(int x, int y)
+	{
+		int sum = 0;
+		while (x > 0 || y > 0){
+			sum = sum + x % 10 + y % 10;
+			x /= 10;
+			y /= 10;
+		}
+		return sum;
+	}
+
+	int IsNextStep(int threshold, int rows, int cols, bool* map, int i, int j)
+	{
+		if (i >= rows || i < 0 || j >= cols || j < 0 || map[i*cols+j] || AddFigure(i, j) > threshold)
+			return 0;
+
+		map[i*cols + j] = true;
+		return 1+IsNextStep(threshold, rows, cols, map, i + 1, j) + IsNextStep(threshold, rows, cols, map, i, j + 1) + \
+			IsNextStep(threshold, rows, cols, map, i - 1, j) + IsNextStep(threshold, rows, cols, map, i, j - 1);
+	}
+
+	int movingCount(int threshold, int rows, int cols)
+	{
+		if (rows < 0 || cols < 0)
+			return 0;
+	/*	bool** map = new bool*[cols];
+		for (int i = 0; i < cols; i++)
+			map[i] = new bool[rows];
+		for (int i = 0; i < rows; i++){
+			for (int j = 0; j < cols; j++){
+				map[i][j] = false;
+			}
+		}*/
+		bool *map = new bool[rows*cols];
+		for (int i = 0; i < rows*cols; ++i)
+			map[i] = false;
+		int res = IsNextStep(threshold, rows, cols, map, 0, 0);
+		delete []map;
+		return res;
+	}
+};
+int main()
+{
+	Solution s;
+	cout << s.movingCount(2, 3, 2);
+
+	return 0;
+}

@@ -1,0 +1,45 @@
+// write your code here cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void CountStep(vector<vector<char> > map, int i, int j, vector<int>& curStep, int dir[][2])
+{
+	
+	
+	for (int d = 0; d < 4; d++){
+		int next_i = i + dir[d][0];
+		int next_j = j + dir[d][1];
+
+		if (next_i >= 0 && next_i < 10 && next_j >= 0 && next_j < 10 \
+			&& map[next_i][next_j] != '#'){
+			if (curStep[next_i * 10 + next_j] == 0 || (curStep[i * 10 + j] + 1) \
+				< curStep[next_i * 10 + next_j]){
+
+				curStep[next_i * 10 + next_j] = curStep[i * 10 + j] + 1;
+				CountStep(map, next_i, next_j, curStep, dir);
+			}
+		}
+		
+	}
+}
+
+int main()
+{
+	string str;
+	while (cin >> str){
+		vector<vector<char> > map(10, vector<char>(10));
+		for (int i = 0; i < 10; i++){
+			if (i>0) cin >> str;
+			for (int j = 0; j < 10; j++)
+				map[i][j] = str[j];
+		}
+		int dir[4][2] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+		vector<int> curStep(10 * 10, 0);
+		// 0,1  9,8
+		CountStep(map, 0, 1, curStep, dir);
+		cout << curStep[98] << endl;
+	}
+	return 0;
+}

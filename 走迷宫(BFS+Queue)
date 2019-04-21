@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+// BFS解法，利用了一个队列queue装载pair<int x, int y>类型数据(对应格子坐标)
+// 之所以使用queue，是因为队列的先进先出特性正好对应了广度优先搜索(BFS)的迭代
+// 由于没有递归调用，去更新某一位置最小步，所以效率较高
+// 队列先进先出就保证了离出口近的格子总是比离出口远的格子先处理
+
+int CountStep(vector<vector<char> > map, int i, int j, vector<int>& curStep, int dir[][2])
+{
+	queue<pair<int, int> >q; // 存储格子坐标
+	pair<int,int> p;
+	q.push(make_pair(i, j));
+	while(1){
+		p = q.front();
+		int x = p.first;
+		int y = p.second;
+		
+		if (x == 9 && y == 8)
+			return curStep[98];
+
+		for (int d = 0; d < 4; d++){
+			int nx = x + dir[d][0];
+			int ny = y + dir[d][1];
+
+			if (nx >= 0 && nx < 10 && ny >= 0 && ny < 10\
+ 				&& curStep[nx*10+ny] == 0 && map[nx][ny] == '.')
+			{
+				curStep[nx*10+ny] = curStep[x*10+y] + 1;
+				q.push(make_pair(nx, ny));
+			}
+		}
+		q.pop();
+	}
+}
+
+int main()
+{
+	string str;
+	while (cin >> str){
+		vector<vector<char> > map(10, vector<char>(10));
+		for (int i = 0; i < 10; i++){
+			if (i>0) cin >> str;
+			for (int j = 0; j < 10; j++)
+				map[i][j] = str[j];
+		}
+		int dir[4][2] = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+		vector<int> curStep(10 * 10, 0);
+		// 0,1  9,8
+		cout << CountStep(map, 0, 1, curStep, dir) << endl;
+	}
+	return 0;
+}

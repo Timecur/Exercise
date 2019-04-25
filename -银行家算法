@@ -1,0 +1,100 @@
+include <iostream>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+void Print(vector<vector<int> > v ,int i , int m)
+{
+	cout << setw(4);
+	for (int j = 0; j < m; j++){
+		cout << " " << v[i][j] << " ";
+	}
+}
+
+int main()
+{
+	int n, m;
+	while (cin >> n >> m && n > 0 && m > 0){
+		vector<vector<int> > max(n, vector<int>(m));	// 总资源
+		vector<vector<int> > need(n, vector<int>(m));	// 需要资源
+		vector<vector<int> > allocation(n, vector<int>(m)); // 已经有的资源
+		vector<int> available(m);	// 可利用资源
+		vector<bool> finish(n);		// 程序运行结果
+		vector<vector<int> >work_alloc(n, vector<int>(m)); 
+		vector<vector<int> >work(n, vector<int>(m));
+		// 输入总资源
+		cout << "Input available: " << endl;
+		for (int i = 0; i < m; i++){
+			cin >> available[i];
+		}
+
+		// 输入需要最大资源
+		cout << "Input Max: " << endl;
+		for (int i = 0; i < n; i++){
+			finish[i] = false;
+			for (int j = 0; j < m; j++){
+				cin >> max[i][j];
+			}
+		}
+		// 输入分配资源
+		cout << "Input Allocation:" << endl;
+		for (int i = 0; i < n; i++){
+			for (int j = 0; j < m; j++){
+				cin >> allocation[i][j];
+				// 剩余资源
+				available[j] -= allocation[i][j];
+			}
+		}
+
+		// 计算每个进程所需资源
+		for (int i = 0; i < n; i++){
+			for (int j = 0; j < m; j++){
+				need[i][j] = max[i][j] - allocation[i][j];
+			}
+		}
+
+		vector<int> invested; // 记录已经运行完的进程
+		while (invested.size() < n){
+			// 循环遍历每个进程需要资源数
+			for (int i = 0; i < n; i++){
+				int count = 0; // 足够使用资源类数
+				// 各类资源比较
+				for (int j = 0; j < m; j++){
+					if (available[j] >= need[i][j] && !finish[i]){
+						count++;
+					}
+					else
+						break;
+				}
+				// m类资源都足够
+				if (count == m){
+					finish[i] = true;
+					invested.push_back(i);
+					work[i] = available;
+					for (int j = 0; j < m; j++){
+						// 更新资源数
+						available[j] += allocation[i][j];     
+					}
+					work_alloc[i] = available;
+				}
+			}
+		}
+
+		cout << " 进程 " << "    Work    " << "    Need   " << "  Allocation  " << "Work+Allocat" << "  Finish"<< endl;
+		for (int i = 0; i < n; i++){
+			cout << "  P" << invested[i];
+			Print(work, invested[i], m);
+			Print(need, invested[i], m);
+			Print(allocation, invested[i], m);
+			Print(work_alloc, invested[i], m);
+			cout << "      ";
+			if (finish[i])
+				cout << "true" << endl;
+			else
+				cout << "false" << endl;
+		}
+	}
+
+	return 0;
+}

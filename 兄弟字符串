@@ -1,0 +1,68 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <unordered_set>
+#include <unordered_map>
+
+using namespace std;
+
+void RecOutput(string cstr, int pos, vector<string> &result){
+
+	int size = cstr.size() - 1;
+	if (pos == size){
+		result.push_back(cstr);
+		return;
+	}
+	unordered_set<char> s;
+	sort(cstr.begin() + pos, cstr.end());
+
+	for (int i = pos; i < cstr.size(); i++){
+		if (s.find(cstr[i]) == s.end()){
+			s.insert(cstr[i]);
+			swap(cstr[pos], cstr[i]);
+			RecOutput(cstr, pos + 1, result);
+			swap(cstr[pos], cstr[i]);
+		}
+	}
+
+}
+
+int main()
+{
+	int n;
+	while (cin >> n){
+		unordered_map<string, int> m;
+		for (int i = 0; i < n; i++){
+			string str;
+			cin >> str;
+			if (m.count(str) < 0)
+				m[str] = 1;
+			else
+				m[str]++;
+		}
+		string dstr;
+		string res = "";
+		int n;
+		int count = 0;
+		cin >> dstr;
+		cin >> n;
+
+		vector<string> result;
+		RecOutput(dstr, 0, result);
+		sort(result.begin(), result.end());
+		bool flag = false;
+		for (int i = 0; i < result.size(); i++){
+			if (dstr != result[i] && m[result[i]] > 0){
+				count += m[result[i]];
+				
+				if (!flag){
+					flag = true;
+					res = result[i];
+				}
+			}
+		}
+		cout << count << " " << res << endl;
+	}
+	return 0;
+}

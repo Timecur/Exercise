@@ -1,0 +1,101 @@
+//#define _CRT_SECURE_NO_WARNINGS 1
+//#include<iostream>
+//#include<fstream>
+//using namespace std;
+//
+////使用文件IO流用文本及二进制方式演示读写配置文件
+//struct ServerInfo
+//{
+//	char _ip[32];
+//	int _port;
+//};
+//
+//
+//struct ConfigManager
+//{
+//public:
+//	ConfigManager(const char* configfile = "bitserver.config")
+//		:_configfile(configfile)
+//	{}
+//
+//
+//	void WriteText(const ServerInfo& info)
+//	{
+//		// 这里会发现IO流写整形比C语言那套就简单多了，        
+//		// C 语言得先把整形itoa再写        
+//		ofstream ofs(_configfile);
+//		ofs << info._ip << endl;
+//		ofs << info._port << endl;
+//		ofs.close();
+//	}
+//
+//
+//	void ReadText(ServerInfo& info)
+//	{
+//		// 这里会发现IO流读整形比C语言那套就简单多了，        
+//		// C 语言得先读字符串，再atoi        
+//		ifstream ifs(_configfile);
+//		ifs >> info._ip;
+//		ifs >> info._port;
+//		ifs.close();
+//	}
+//
+//private:
+//	string _configfile; // 配置文件 
+//};
+//
+//
+//int main()
+//{
+//	ConfigManager cfgMgr;
+//
+//	ServerInfo wtinfo;
+//	ServerInfo rdinfo;
+//	strcpy(wtinfo._ip, "127.0.0.1");
+//	wtinfo._port = 80;
+//
+//
+//	// 文本读写    
+//	cfgMgr.WriteText(wtinfo);
+//	cfgMgr.ReadText(rdinfo);
+//	cout << rdinfo._ip << endl;
+//	cout << rdinfo._port << endl;
+//
+//	system("pause");
+//	return 0;
+//
+//}
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	ofstream wr("./file.txt");
+	if (!wr){
+		cerr << "open file failed\n" << endl;
+		return -1;
+	}
+	string str;
+	cout << "输入字符串：";
+	getline(cin, str);
+	wr << str;
+	wr.close();
+
+	fstream fop;
+	fop.open("./file.txt", ios::app);
+	if (!fop){
+		cerr << "open file failed\n" << endl;
+		return -1;
+	}
+	string str2;
+	cout << "输入字符串：";
+	getline(cin, str2);
+	fop << str2;
+
+	fop.close();
+	return 0;
+}
+

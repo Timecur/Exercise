@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+	vector<int> fab(85, 1);
+	for (int i = 3; i < 85; i++){
+		fab[i] = fab[i - 1] + fab[i - 2];
+	}
+	while (1){
+		int from, to;
+		cin >> from >> to;
+		if (80 < from || from < 1 || to > 80 || to < 1){
+			return 0;
+		}
+		int sum = 0;
+		for (int i = from; i <= to; i++){
+			sum += fab[i];
+		}
+		cout << sum << endl;
+	}
+	return 0;
+}

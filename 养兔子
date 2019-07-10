@@ -1,0 +1,19 @@
+养兔子
+
+// write your code here cpp
+#include <iostream>
+
+using namespace std;
+
+int main(){
+	int n;
+	long long cur[95] = {0, 1, 2}; // 当前总共
+	for (int i = 3; i < 95; i++){
+		cur[i] = cur[i - 2] * 2 + (cur[i - 1]-cur[i-2]);
+	}
+
+	while (cin >> n){
+		cout << cur[n] << endl;
+	}
+	return 0;
+}

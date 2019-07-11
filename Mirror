@@ -1,0 +1,75 @@
+ 翻转一棵二叉树
+ /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+   例：
+         3
+       /   \
+      2     8
+     / \   / \
+    1   4 5   9  
+    
+         3
+       /   \
+      8     2
+     / \   / \
+    9   5 4   1  
+=========================================================================================================================================
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+class TreeNode {
+public:
+	int val;
+	TreeNode *left;
+	TreeNode *right;
+	TreeNode(int x) { val = x; }
+};
+void Reversal(TreeNode *root) {
+
+	TreeNode* pNode = root;
+
+	if (pNode){
+		swap(pNode->left, pNode->right);
+		Reversal(pNode->left);
+		Reversal(pNode->right);
+	}
+}
+int main()
+{
+	vector<int> num;
+	int i;
+	while (cin.peek()!='\n' && cin >> i){
+		num.push_back(i);
+	}
+	if (num.size() == 0)
+		return 0;
+
+	TreeNode *root = new TreeNode(num[0]);
+	TreeNode *ret = root;
+	queue<TreeNode*> q;
+	q.push(ret);
+	for (int i = 0; i < num.size(); i++){
+		if(!q.empty()){
+			if (ret != root)
+				ret->val = num[i];
+			q.push(ret->left = new TreeNode(0));
+			q.push(ret->right = new TreeNode(0));
+			q.pop();
+			ret = q.front();
+		}
+	}
+	Reversal(root);
+	return 0;
+}
+

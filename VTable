@@ -1,0 +1,70 @@
+#include <iostream>
+
+using namespace std;
+
+//
+//class Base{
+//public:
+//	virtual void A(){cout << "Base::A()" << endl;}
+//	virtual void B(){cout << "Base::B()" << endl;}
+//	void C(){cout << "Base::C()" << endl;}
+//
+//	int D;
+//};
+//
+//int main(){
+//	Base* b1 = new Base;
+//
+//
+//	return 0;
+//}
+
+
+//class Base{
+//public:
+//	virtual void A(){ cout << "Base::A()" << endl; }
+//	virtual void B(){ cout << "Base::B()" << endl; }
+//};
+//
+//class Base2{
+//	virtual void A(){ cout << "Base::A()" << endl; }
+//	virtual void B(){ cout << "Base::B()" << endl; }
+//};
+//
+//class Derive :public Base2, public Base{
+//public:
+//	// void A(){ cout << "Derive::A()" << endl; }
+//	virtual void C(){ cout << "Derive::C()" << endl; }
+//	virtual void D(){ cout << "Derive::D()" << endl; }
+//};
+//typedef void(*pVtable)(void);
+//
+//void PrintVTable(pVtable vTable[])
+//{
+//	// 依次取虚表中的虚函数指针打印并调用。调用就可以看出存的是哪个函数
+//	cout << " 虚表地址>" << vTable << endl;
+//	for (int i = 0; vTable[i] != nullptr; ++i)
+//	{
+//		printf(" 第%d个虚函数地址 :0X%x,->", i, vTable[i]);
+//		pVtable f = vTable[i];
+//		f();
+//	}
+//	cout << endl;
+//}
+//
+//int main(){
+//	Base b1;
+//	Base2 b2;
+//	Derive d1;
+//
+//	pVtable* vTableb1 = (pVtable*)(*(int*)&b1);
+//	PrintVTable(vTableb1);
+//	pVtable* vTableb2 = (pVtable*)(*(int*)&b2);
+//	PrintVTable(vTableb2);
+//	pVtable* vTabled = (pVtable*)(*(int*)&d1);
+//	PrintVTable(vTabled);
+//	vTabled = (pVtable*)(*(int*)((char* )&d1+sizeof(Base)));
+//	PrintVTable(vTabled);
+//
+//	return 0;
+//}

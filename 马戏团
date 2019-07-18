@@ -1,0 +1,52 @@
+https://www.nowcoder.com/questionTerminal/c2afcd7353f84690bb73aa6123548770
+
+#include <iostream>
+#include <vector>
+#include <utility>
+#include <algorithm>
+
+using namespace std;
+
+bool CMP(pair<int, int> p1, pair<int, int> p2){
+	if (p1.first == p2.first){
+		if (p1.second < p2.second)
+			return false;
+		return true;
+	}
+
+	return p1.first < p2.first ? true : false;
+}
+
+int main(){
+	int m;
+	while(cin >> m){
+	vector<pair<int, int>> wh;
+	int n = m;
+	while (n--){
+		int num, w, h;
+		cin >> num >> w >> h;
+		wh.push_back({ w, h });
+	}
+
+	sort(wh.begin(), wh.end(), CMP);
+	vector<int> h;
+
+	for (int i = 0; i < m; i++){
+		h.push_back(wh[i].second);
+	}
+
+	vector<int> dp(m, 1);
+	int res = 1;
+	for (int i = 1; i < m; i++){
+		for (int j = 0; j < i; j++){
+			if (h[j] <= h[i]){
+				dp[i] = max(dp[j] + 1, dp[i]);
+			}
+			
+		}
+		res = max(dp[i], res);
+	}
+	cout << res << endl;
+    }
+	return 0;
+}

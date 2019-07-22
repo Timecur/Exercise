@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n;
+    while(cin >> n){
+        char ch;
+        string str;
+        vector<int> v(26, 0);
+        int mxcon = 0;
+        int cur = 0;
+        
+        while(n--){
+            cin >> ch;
+            cin >> str;
+            if(str.compare("connect") == 0){
+                ++v[ch-'A'];
+                ++cur;
+            }
+            else{
+                if(v[ch-'A'] > 0){
+                    --v[ch-'A'];
+                    --cur;
+                }
+            }
+            mxcon = max(mxcon, cur);
+        }
+        cout << mxcon << endl;
+        
+    }
+    
+    return 0;
+}
